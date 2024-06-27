@@ -7,10 +7,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.6.2/Recharts.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: Arial, sans-serif; }
-        #root { padding: 20px; }
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .chart-container { width: 100%; height: 400px; }
+        .chart-title { font-size: 1.5em; font-weight: bold; margin-bottom: 1em; }
+        .chart-note { font-size: 0.8em; margin-top: 1em; }
     </style>
 </head>
 <body>
@@ -18,7 +19,7 @@
         <p>Loading chart... If you see this message for more than a few seconds, there might be an issue with JavaScript execution in your browser.</p>
     </div>
     <script>
-        window.onload = function() {
+        function loadChart() {
             const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = Recharts;
 
             const data = [
@@ -29,25 +30,41 @@
             ];
 
             function DenmarkBeefComparison() {
-                return React.createElement('div', { className: 'p-4' },
-                    React.createElement('h2', { className: 'text-2xl font-bold mb-4' }, "Denmark's Beef Industry Compared to Global Leaders and Median"),
-                    React.createElement(ResponsiveContainer, { width: '100%', height: 400 },
-                        React.createElement(BarChart, { data: data, margin: { top: 20, right: 30, left: 20, bottom: 5 } },
-                            React.createElement(CartesianGrid, { strokeDasharray: '3 3' }),
-                            React.createElement(XAxis, { dataKey: 'country' }),
-                            React.createElement(YAxis, { label: { value: 'Thousand Metric Tons', angle: -90, position: 'insideLeft' } }),
-                            React.createElement(Tooltip),
-                            React.createElement(Legend),
-                            React.createElement(Bar, { dataKey: 'production', fill: '#8884d8', name: 'Production' }),
-                            React.createElement(Bar, { dataKey: 'exports', fill: '#82ca9d', name: 'Exports' }),
-                            React.createElement(Bar, { dataKey: 'imports', fill: '#ffc658', name: 'Imports' })
+                return React.createElement('div', null,
+                    React.createElement('h2', { className: 'chart-title' }, "Denmark's Beef Industry Compared to Global Leaders and Median"),
+                    React.createElement('div', { className: 'chart-container' },
+                        React.createElement(ResponsiveContainer, { width: '100%', height: '100%' },
+                            React.createElement(BarChart, { data: data, margin: { top: 20, right: 30, left: 20, bottom: 5 } },
+                                React.createElement(CartesianGrid, { strokeDasharray: '3 3' }),
+                                React.createElement(XAxis, { dataKey: 'country' }),
+                                React.createElement(YAxis, { label: { value: 'Thousand Metric Tons', angle: -90, position: 'insideLeft' } }),
+                                React.createElement(Tooltip),
+                                React.createElement(Legend),
+                                React.createElement(Bar, { dataKey: 'production', fill: '#8884d8', name: 'Production' }),
+                                React.createElement(Bar, { dataKey: 'exports', fill: '#82ca9d', name: 'Exports' }),
+                                React.createElement(Bar, { dataKey: 'imports', fill: '#ffc658', name: 'Imports' })
+                            )
                         )
                     ),
-                    React.createElement('p', { className: 'mt-4 text-sm' }, 'Note: Data is approximate and for illustrative purposes. Values are in thousand metric tons.')
+                    React.createElement('p', { className: 'chart-note' }, 'Note: Data is approximate and for illustrative purposes. Values are in thousand metric tons.')
                 );
             }
 
             ReactDOM.render(React.createElement(DenmarkBeefComparison), document.getElementById('root'));
+        }
+
+        // Check if Recharts is loaded, if not, wait for it
+        if (typeof Recharts !== 'undefined') {
+            loadChart();
+        } else {
+            window.addEventListener('load', function() {
+                if (typeof Recharts !== 'undefined') {
+                    loadChart();
+                } else {
+                    console.error('Recharts library failed to load');
+                    document.getElementById('root').innerHTML = 'Error: Unable to load the chart library. Please check your internet connection and try again.';
+                }
+            });
         }
     </script>
 </body>

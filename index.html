@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Denmark Beef Industry Comparison</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.1.9/Recharts.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = Recharts;
+
+        const data = [
+            { country: 'Denmark', production: 129, exports: 95, imports: 155 },
+            { country: 'Brazil (Top Exporter)', production: 10200, exports: 2534, imports: 46 },
+            { country: 'USA (Top Importer)', production: 12374, exports: 1473, imports: 1375 },
+            { country: 'Global Median', production: 180, exports: 5, imports: 22 },
+        ];
+
+        const DenmarkBeefComparison = () => (
+            <div className="p-4">
+                <h2 className="text-2xl font-bold mb-4">Denmark's Beef Industry Compared to Global Leaders and Median</h2>
+                <ResponsiveContainer width="100%" height={400}>
+                    <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="country" />
+                        <YAxis label={{ value: 'Thousand Metric Tons', angle: -90, position: 'insideLeft' }} />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="production" fill="#8884d8" name="Production" />
+                        <Bar dataKey="exports" fill="#82ca9d" name="Exports" />
+                        <Bar dataKey="imports" fill="#ffc658" name="Imports" />
+                    </BarChart>
+                </ResponsiveContainer>
+                <p className="mt-4 text-sm">Note: Data is approximate and for illustrative purposes. Values are in thousand metric tons.</p>
+            </div>
+        );
+
+        ReactDOM.render(<DenmarkBeefComparison />, document.getElementById('root'));
+    </script>
+</body>
+</html>
